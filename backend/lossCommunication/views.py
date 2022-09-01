@@ -1,3 +1,4 @@
+from email import message
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
@@ -34,36 +35,63 @@ def validateCpf(cpf):
 def producerRoute(request, cpf = 0, id = 0):
   if request.method == 'GET':
     if cpf:
-      producer = Producer.objects.get(cpf = cpf);
-      producer_serializer = ProducerSerializer(producer, many = False)
+      try:
+        producer = Producer.objects.filter(cpf = cpf);
+      except:
+        return JsonResponse({
+          'message': 'Podutor não encontrado'
+        }, safe = False)
+      producer_serializer = ProducerSerializer(producer, many = True)
       return JsonResponse(producer_serializer.data, safe= False);
     producers = Producer.objects.all();
     producer_serializer = ProducerSerializer(producers, many = True)
     return JsonResponse(producer_serializer.data, safe = False)
+
   if request.method == 'POST':
     producer_data = JSONParser().parse(request)
     validEmail = validateEmail(producer_data['email'])
     validCpf = validateCpf(producer_data['cpf'])
     if not validEmail or not validCpf:
-      return JsonResponse('Informações de email ou CPF estão incorretas', safe=False)
+      return JsonResponse({
+        'message': 'Informações de email ou CPF estão incorretas'
+      }, safe=False)
     producer_serializer = ProducerSerializer(data = producer_data)
     if producer_serializer.is_valid():
       producer_serializer.save()
-      return JsonResponse('Comunicação de evento adicionada com sucesso', safe=False)
-    return JsonResponse('Não foi possível registrar a comunicação de evento', safe=False)
+      return JsonResponse({
+        'message': 'Comunicação de evento adicionada com sucesso'
+      }, safe=False)
+    return JsonResponse({
+      'message': 'Não foi possível registrar a comunicação de evento'
+    }, safe=False)
+
   if request.method == 'PUT':
     producer_data = JSONParser().parse(request)
     validEmail = validateEmail(producer_data['email'])
     validCpf = validateCpf(producer_data['cpf'])
     if not validEmail or not validCpf:
-      return JsonResponse('Informações de email ou CPF estão incorretas', safe=False)
-    producer = Producer.objects.get(id = producer_data['id'])
+      return JsonResponse({
+        'message': 'Informações de email ou CPF estão incorretas'
+      }, safe=False)
+    try:
+      producer = Producer.objects.get(cpf = cpf)
+    except:
+      return JsonResponse({
+        'message': 'Produtor não encontrado'
+      }, safe = False)
     producer_serializer = ProducerSerializer(producer, data = producer_data)
     if producer_serializer.is_valid():
       producer_serializer.save()
-      return JsonResponse('Comunicação atualizada com sucesso', safe = False)
-    return JsonResponse('Não foi possível atualizar a comunicação', safe = False)
+      return JsonResponse({
+        'message': 'Comunicação atualizada com sucesso'
+      }, safe = False)
+    return JsonResponse({
+      'message': 'Não foi possível atualizar a comunicação'
+    }, safe = False)
+
   if request.method == 'DELETE':
     producer = Producer.objects.get(id = id)
     producer.delete()
-    return JsonResponse('Comunicação deletada com sucesso', safe = False)
+    return JsonResponse({
+      'message': 'Comunicação deletada com sucesso'
+    }, safe = False)
