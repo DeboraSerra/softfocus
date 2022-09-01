@@ -1,31 +1,33 @@
 import React, { createContext, useEffect, useState } from 'react';
+import axios from 'axios';
 
 export const Context = createContext();
-
-const url = process.env.REACT_APP_API;
 
 const Provider = ({ children }) => {
   const [state, setState] = useState({
     events: [],
+    communications: [],
   })
 
   useEffect(() => {
     getEvents();
+    getCommunications()
   }, [])
 
   const getEvents = async () => {
-    const response = await fetch('http://localhost:8000/events');
-    const data = await response.json();
+    const data = await axios('http://localhost:8000/events')
     setState((prevSt) => ({
       ...prevSt,
-      events: data,
+      events: data.data,
     }))
   }
 
   const getCommunications = async () => {
-    const response = await fetch('http://localhost:8000/producer')
-    const data = await response.json();
-    console.log(data)
+    const data = await axios('http://localhost:8000/producer')
+    setState((prevSt) => ({
+      ...prevSt,
+      communications: data.data,
+    }))
   }
 
   const value = {
