@@ -11,7 +11,7 @@ const Provider = ({ children }) => {
 
   useEffect(() => {
     getEvents();
-    getCommunications()
+    getCommunications();
   }, [])
 
   const getEvents = async () => {

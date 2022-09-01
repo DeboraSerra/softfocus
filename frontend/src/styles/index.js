@@ -58,10 +58,95 @@ const SBanner = styled.img`
   opacity:  0.8;
 `;
 
+const SForm = styled.form`
+  width: 60%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SInput = styled.input`
+  width: 90%;
+  text-align: center;
+  margin: 16px auto;
+  padding: 16px 8px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--lighter-gray);
+  position: relative;
+  color: var(--gray);
+  &::placeholder {
+    color: var(--gray);
+  }
+`;
+
+const SInputHalf = styled.input`
+  width: 40%;
+  text-align: center;
+  margin: 16px auto;
+  padding: 16px 8px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--lighter-gray);
+  position: relative;
+  color: var(--gray);
+  &::placeholder {
+    color: var(--gray);
+  }
+`;
+
+const SSelect = styled.select`
+  width: 90%;
+  text-align: center;
+  margin: 16px auto;
+  padding: 16px 8px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--lighter-gray);
+  position: relative;
+  color: var(--gray);
+  &::placeholder {
+    color: var(--gray);
+  }
+`;
+
+const SButton = styled.button`
+  background-color: var(--blue);
+  width: 90%;
+  margin: 16px auto;
+  border: none;
+  color: var(--lighter-gray);
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+  &:active {
+    background-color: var(--accent);
+  }
+  &:disabled {
+    background-color: var(--light-gray);
+    color: var(--gray);
+    &:hover {
+      opacity: 1;
+    }
+  }
+`
+
 export {
   SHeader,
   SMain,
   SFooter,
   SLogo,
-  SBanner
+  SBanner,
+  SInput,
+  SForm,
+  SInputHalf,
+  SSelect,
+  SButton,
 }

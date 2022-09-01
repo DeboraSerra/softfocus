@@ -1,9 +1,11 @@
 :root {
   --light-blue: #129bba;
   --blue: #325694;
+  --accent: #ff6f67;
   --green: #056a54;
   --gray: #292929;
   --light-gray: #b0a8a7;
+  --lighter-gray: #cfcbcb;
 }
 
 * {
