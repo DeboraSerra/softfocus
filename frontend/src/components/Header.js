@@ -1,17 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { SHeader, SLogo } from '../styles';
 import logo from '../images/Frame-2.png';
 
 const Header = () => {
   return (
     <SHeader>
-      <Link to="/">
+      <NavLink to="/">
         <SLogo src={ logo } alt="Logotipo da SoftFocus" />
-      </Link>
+      </NavLink>
       <nav>
-        <Link to="/register">Comunicar um evento</Link>
-        <Link to="/search">Buscar comunicações</Link>
+        <NavLink
+          className={ ({ isActive }) => isActive ? 'link active' : 'link'}
+          to="/register"
+        >
+          Comunicar um evento
+        </NavLink>
+        <NavLink
+          className={ ({ isActive }) => isActive ? 'link active' : 'link'}
+          to="/search"
+        >
+          Buscar comunicações
+        </NavLink>
       </nav>
     </SHeader>
   )
