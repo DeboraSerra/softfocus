@@ -14,7 +14,7 @@ const Register = () => {
     cpf: '',
     type: '',
     lastCrop: '',
-    event: 1,
+    event: '',
     latitude: '',
     longitude: '',
   });
@@ -22,7 +22,7 @@ const Register = () => {
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState('');
   const { fullName, email, cpf, type, lastCrop, event, latitude, longitude } = state;
-  const { events, communications } = useContext(Context);
+  const { events, communications, getCommunications } = useContext(Context);
 
   const navigate = useNavigate()
 
@@ -40,7 +40,14 @@ const Register = () => {
   }
 
   useEffect(() => {
-    const validFields = fullName && email && type && lastCrop && latitude && longitude;
+    getComs();
+  }, [])
+
+  const getComs = async () => {
+   await getCommunications();
+  }
+  useEffect(() => {
+    const validFields = fullName && email && type && lastCrop && latitude && longitude && event;
     const validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/g.test(email);
     const validCpf = cpf && cpf.length === 11;
     setDisabled(!validFields || !validEmail || !validCpf);
@@ -62,6 +69,7 @@ const Register = () => {
       Math.sin(dLon/2) * Math.sin(dLon/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     const d = R * c; // Distance in km
+    console.log({ dLat, dLon, a, c, d, lat1, lon1, lat2, lon2 })
     return d;
   }
 
@@ -70,20 +78,31 @@ const Register = () => {
   }
 
   useEffect(() => {
-    const filtered = registers.filter(({ location }) => {
-      const [lat, lon] = location.split(',');
-      const distance = getDistanceFromLatLonInKm(latitude, longitude, lat, lon);
-      return distance < 10;
-    })
-    const list = filtered.filter(({ event: eventId }) => event === eventId);
-    setRegisters(list);
-  }, [disabled])
+    if (latitude && longitude) {
+      const filtered = registers.filter(({ location }) => {
+        const [lat, lon] = location.split(',');
+        const distance = getDistanceFromLatLonInKm(+latitude.replace(',', '.'), +longitude.replace(',', '.'), +lat, +lon);
+        console.log({distance, lat, lon})
+        return distance < 10;
+      })
+      const list = filtered.filter(({ event: eventId }) => event === eventId);
+      setRegisters(list);
+    }
+  }, [event])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const location = `${latitude},${longitude}`;
+    const location = `${latitude.replace(',', '.')},${longitude.replace(',', '.')}`;
     const { latitude: lat, longitude: lon, ...info } = state;
-    const data = await axios.post('http://localhost:8000/producer', { ...info, location });
+    const data = await axios({
+      url: 'http://localhost:8000/producer',
+      method: 'post',
+      data: { ...info, location },
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
     if (data.message) {
       setError(data.message);
       return;
@@ -94,17 +113,20 @@ const Register = () => {
   const date = new Date().toISOString().split('T')[0];
 
   return (
-    <SForm>
-      {registers.length > 0 && (
+    <SForm onSubmit={ handleSubmit }>
+      {error & <p>{error}</p>}
+      {event && registers.length > 0 && (
         <section>
           <p>O evento informado está divergente dos registros abaixo:</p>
-          {registers.map((reg) => (
-            <section>
-              <p>{reg.fullName}</p>
-              <p>{reg.location}</p>
-              <p>{events.find(({ id }) => id === reg.event).name}</p>
-            </section>
-          ))}
+          <section>
+            {registers.map((reg) => (
+              <section key={ reg.id }>
+                <p>{reg.fullName}</p>
+                <p>{reg.location}</p>
+                <p>{events.find(({ id }) => id === reg.event).name}</p>
+              </section>
+            ))}
+          </section>
         </section>
       )}
       <ReactTooltip place="bottom" effect="solid" multiline={ true } id="location">
@@ -174,6 +196,7 @@ const Register = () => {
         />
       </section>
       <SSelect name="event" onChange={ handleChange } value={ event }>
+        <option value="" disabled>Selecione o evento</option>
         {events.map(({ id, name }) => (
           <option key={ id } value={ id }>{name}</option>
         ))}
