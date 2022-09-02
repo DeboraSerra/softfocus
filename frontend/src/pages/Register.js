@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Context } from '../context/Provider';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import ReactTooltip from 'react-tooltip';
@@ -24,9 +24,11 @@ const Register = () => {
   const { fullName, email, cpf, type, lastCrop, event, latitude, longitude } = state;
   const { events, communications, getCommunications } = useContext(Context);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleChange = ({ target }) => {
+    setError('');
     const { name }  = target;
     let { value } = target;
     if (name === 'cpf') {
@@ -45,6 +47,20 @@ const Register = () => {
 
   const getComs = async () => {
    await getCommunications();
+   if (id) {
+    const com = communications?.find((comm) => comm.id === +id);
+    setState((prevSt) => ({
+      ...prevSt,
+      fullName: com.fullName,
+      email: com.email,
+      cpf: com.cpf,
+      event: com.event,
+      lastCrop: com.lastCrop,
+      latitude: com.location.split(',')[0].replace('.', ','),
+      longitude: com.location.split(',')[1].replace('.', ','),
+      type: com.type,
+    }))
+   }
   }
   useEffect(() => {
     const validFields = fullName && email && type && lastCrop && latitude && longitude && event;
@@ -69,7 +85,6 @@ const Register = () => {
       Math.sin(dLon/2) * Math.sin(dLon/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     const d = R * c; // Distance in km
-    console.log({ dLat, dLon, a, c, d, lat1, lon1, lat2, lon2 })
     return d;
   }
 
@@ -77,36 +92,36 @@ const Register = () => {
     return deg * (Math.PI/180)
   }
 
-  useEffect(() => {
-    if (latitude && longitude) {
-      const filtered = registers.filter(({ location }) => {
-        const [lat, lon] = location.split(',');
-        const distance = getDistanceFromLatLonInKm(+latitude.replace(',', '.'), +longitude.replace(',', '.'), +lat, +lon);
-        console.log({distance, lat, lon})
-        return distance < 10;
-      })
-      const list = filtered.filter(({ event: eventId }) => event === eventId);
-      setRegisters(list);
-    }
-  }, [event])
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const filtered = registers.filter(({ location }) => {
+      const [lat, lon] = location.split(',');
+      const distance = getDistanceFromLatLonInKm(+latitude.replace(',', '.'), +longitude.replace(',', '.'), +lat, +lon);
+      return distance <= 10;
+    })
+    const list = filtered.filter(({ event: eventId }) => event === eventId);
+    if (list.length !== 0) {
+      setRegisters(list);
+      return;
+    }
     const location = `${latitude.replace(',', '.')},${longitude.replace(',', '.')}`;
     const { latitude: lat, longitude: lon, ...info } = state;
+    let url = 'http://localhost:8000/producer';
+    if (id) url += `/get/${+id}`;
     const data = await axios({
-      url: 'http://localhost:8000/producer',
-      method: 'post',
+      url,
+      method: id ? 'put' : 'post',
       data: { ...info, location },
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       }
     });
-    if (data.message) {
-      setError(data.message);
+    if (data.data.message) {
+      setError(data.data.message);
       return;
     }
+    getCommunications();
     navigate('/search');
   }
 
@@ -114,8 +129,8 @@ const Register = () => {
 
   return (
     <SForm onSubmit={ handleSubmit }>
-      {error & <p>{error}</p>}
-      {event && registers.length > 0 && (
+      {!!error && <p>{error}</p>}
+      {events?.find((ev) => ev.id !== event) && registers.length > 0 && (
         <section>
           <p>O evento informado está divergente dos registros abaixo:</p>
           <section>
@@ -129,7 +144,13 @@ const Register = () => {
           </section>
         </section>
       )}
-      <ReactTooltip place="bottom" effect="solid" multiline={ true } id="location">
+      <ReactTooltip
+        place="right"
+        effect="float"
+        multiline={ true }
+        id="location"
+        isCapture={ false }
+      >
         <p>Para achar a localização da sua lavoura, <br />acesse o google maps, clique com o botão direito <br />sobre o local da sua lavoura e copie os dois números que<br /> aparecem na posição inferior da tela. <br /> O primeiro é a latitude e o segundo é a longitude.</p>
       </ReactTooltip>
       <SInput
@@ -164,15 +185,19 @@ const Register = () => {
         placeholder="Tipo da lavoura"
         aria-label="Tipo da lavoura"
       />
-      <SInput
-        type="date"
-        name="lastCrop"
-        value={ lastCrop }
-        onChange={ handleChange }
-        placeholder="Data da última colheita"
-        aria-label="Data da última colheita"
-        max={ date }
-      />
+      <label htmlFor="date" style={{ width: '100%', textAlign: 'center' }}>
+        Data da última colheita
+        <SInput
+          id="date"
+          type="date"
+          name="lastCrop"
+          value={ lastCrop }
+          onChange={ handleChange }
+          placeholder="Data da última colheita"
+          aria-label="Data da última colheita"
+          max={ date }
+        />
+      </label>
       <section className={ style.sect }>
         <SInputHalf
           type="text"
