@@ -7,6 +7,7 @@ const Provider = ({ children }) => {
   const [state, setState] = useState({
     events: [],
     communications: [],
+    loading: true,
   })
 
   useEffect(() => {
@@ -14,25 +15,37 @@ const Provider = ({ children }) => {
     getCommunications();
   }, [])
 
+  const changeLoading = () => {
+    setState((prevSt) => ({
+      ...prevSt,
+      loading: !state.loading,
+    }))
+  }
+
   const getEvents = async () => {
     const data = await axios('http://localhost:8000/events')
     setState((prevSt) => ({
       ...prevSt,
       events: data.data,
+      loading: false,
     }))
   }
 
-  const getCommunications = async () => {
-    const data = await axios('http://localhost:8000/producer')
+  const getCommunications = async (cpf = '') => {
+    let url = 'http://localhost:8000/producer';
+    if (cpf) url += `/${cpf}`;
+    const data = await axios(url)
     setState((prevSt) => ({
       ...prevSt,
       communications: data.data,
+      loading: false,
     }))
   }
 
   const value = {
     ...state,
     getCommunications,
+    changeLoading,
   }
   return (
     <Context.Provider value={ value }>

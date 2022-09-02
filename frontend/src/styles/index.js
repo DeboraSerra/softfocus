@@ -12,10 +12,11 @@ const SHeader = styled.header`
     justify-content: space-between;
     align-items: center;
 
-    & a {
+    & .link {
       text-decoration: none;
       color: var(--gray);
       font-size: 1.2rem;
+      padding-bottom: 12px;
 
       &:hover {
         opacity: 0.9;
@@ -24,6 +25,10 @@ const SHeader = styled.header`
       &:active {
         color: var(--blue);
       }
+    }
+
+    & .active {
+      border-bottom: 1px solid var(--accent);
     }
   }
 `;
@@ -41,6 +46,10 @@ const SFooter = styled.footer`
   background-image: linear-gradient(179.52243830414005deg, rgba(255, 255, 255,1) 30.925632911392405%,rgba(6, 106, 84,1) 89.25896624472574%,rgba(5, 106, 84,1) 89.25896624472574%);
   height: 125px;
   color: var(--gray);
+  & a {
+    text-decoration: none;
+    color: black;
+  }
 `
 
 const SLogo = styled.img`
@@ -63,6 +72,13 @@ const SForm = styled.form`
   margin: auto;
   display: flex;
   flex-direction: column;
+`;
+
+const SFormHorizontal = styled.form`
+  width: 60%;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
 `;
 
 const SInput = styled.input`
@@ -136,7 +152,22 @@ const SButton = styled.button`
       opacity: 1;
     }
   }
-`
+`;
+
+const STable = styled.table`
+  border: 1px solid var(--gray);
+  padding: 4px;
+  margin: auto;
+  text-align: center;
+
+  & td, & th {
+    padding: 8px;
+  }
+
+  & td {
+    border-top: 1px solid var(--gray);
+  }
+`;
 
 export {
   SHeader,
@@ -149,4 +180,6 @@ export {
   SInputHalf,
   SSelect,
   SButton,
+  SFormHorizontal,
+  STable,
 }

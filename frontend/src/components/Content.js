@@ -12,6 +12,7 @@ const Content = () => {
       <Routes>
         <Route exact path="/" element={ <Home /> } />
         <Route path="/register" element={ <Register /> } />
+        <Route path="/register/:id" element={ <Register /> } />
         <Route path="/search" element={ <Search /> } />
       </Routes>
     </SMain>
