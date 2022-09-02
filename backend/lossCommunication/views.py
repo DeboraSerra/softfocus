@@ -58,9 +58,7 @@ def producerRoute(request, cpf = 0, id = 0):
     producer_serializer = ProducerSerializer(data = producer_data)
     if producer_serializer.is_valid():
       producer_serializer.save()
-      return JsonResponse({
-        'message': 'Comunicação de evento adicionada com sucesso'
-      }, safe=False)
+      return JsonResponse(producer_serializer.data, safe=False)
     return JsonResponse({
       'message': 'Não foi possível registrar a comunicação de evento'
     }, safe=False)
@@ -74,7 +72,7 @@ def producerRoute(request, cpf = 0, id = 0):
         'message': 'Informações de email ou CPF estão incorretas'
       }, safe=False)
     try:
-      producer = Producer.objects.get(cpf = cpf)
+      producer = Producer.objects.get(id = id)
     except:
       return JsonResponse({
         'message': 'Produtor não encontrado'
@@ -82,9 +80,7 @@ def producerRoute(request, cpf = 0, id = 0):
     producer_serializer = ProducerSerializer(producer, data = producer_data)
     if producer_serializer.is_valid():
       producer_serializer.save()
-      return JsonResponse({
-        'message': 'Comunicação atualizada com sucesso'
-      }, safe = False)
+      return JsonResponse(producer_serializer.data, safe = False)
     return JsonResponse({
       'message': 'Não foi possível atualizar a comunicação'
     }, safe = False)
