@@ -46,6 +46,7 @@ const Provider = ({ children }) => {
     ...state,
     getCommunications,
     changeLoading,
+    setState,
   }
   return (
     <Context.Provider value={ value }>

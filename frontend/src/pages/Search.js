@@ -10,7 +10,8 @@ import style from '../styles/Search.module.css';
 
 const Search = () => {
   const [message, setMessage] = useState('');
-  const { loading, events, communications, getCommunications, changeLoading } = useContext(Context);
+  const [order, setOrder] = useState('');
+  const { loading, events, communications, getCommunications, changeLoading, setState } = useContext(Context);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,13 +32,29 @@ const Search = () => {
     }, 5000)
   }
 
+  const handleOrder = ({ target: { value } }) => {
+    const newList = communications.sort((a, b) => value === 'asc'
+      ? new Date(a.lastCrop) - new Date(b.lastCrop)
+      : new Date(b.lastCrop) - new Date(a.lastCrop))
+    setState((prevSt) => ({
+      ...prevSt,
+      communications: newList,
+    }))
+    setOrder(value);
+  }
+
   const getEvent = (id) => events?.find((e) => e.id === id);
   const getDate = (date) => date.split('-').reverse().join('/');
 
   return (
     <section>
-      {message && <p>{message}</p>}
+      {message && <p className={ style.message }>{message}</p>}
       <SearchBar />
+      <select className={ style.order } onChange={ handleOrder } value={ order }>
+        <option disabled>Ordenar por</option>
+        <option value="desc">Colheita mais recente</option>
+        <option value="asc">Colheita mais antiga</option>
+      </select>
       <STable>
         <thead>
           <tr>
