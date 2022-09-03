@@ -33,7 +33,8 @@ const Register = () => {
     let { value } = target;
     if (name === 'cpf') {
       value = value.includes('.') || value.includes('-')
-        ? value.split('.').join('').split('-').join('') : value;
+        ? value.split('.').join('').split('-').join('')
+        : value;
     }
     setState((prevSt) => ({
       ...prevSt,
