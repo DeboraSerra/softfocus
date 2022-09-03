@@ -23,7 +23,7 @@ const Provider = ({ children }) => {
   }
 
   const getEvents = async () => {
-    const data = await axios('http://localhost:8000/events')
+    const data = await axios('https://softfocus.vercel.app/events')
     setState((prevSt) => ({
       ...prevSt,
       events: data.data,
@@ -32,7 +32,7 @@ const Provider = ({ children }) => {
   }
 
   const getCommunications = async (cpf = '') => {
-    let url = 'http://localhost:8000/producer';
+    let url = 'https://softfocus.vercel.app/producer';
     if (cpf) url += `/${cpf}`;
     const data = await axios(url)
     setState((prevSt) => ({

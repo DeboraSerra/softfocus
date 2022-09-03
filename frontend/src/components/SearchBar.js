@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { Context } from '../context/Provider';
-import { SButton, SFormHorizontal, SInput } from '../styles';
 import style from '../styles/SearchBar.module.css';
 
 const SearchBar = () => {

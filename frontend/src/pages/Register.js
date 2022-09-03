@@ -130,7 +130,7 @@ const Register = () => {
     }
     const location = `${latitude.replace(',', '.')},${longitude.replace(',', '.')}`;
     const { latitude: lat, longitude: lon, ...info } = state;
-    let url = 'http://localhost:8000/producer';
+    let url = 'https://softfocus.vercel.app/producer';
     if (id) url += `/get/${+id}`;
     const data = await axios({
       url,

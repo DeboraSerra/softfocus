@@ -22,7 +22,7 @@ const Search = () => {
   const handleDelete = async (id) => {
     changeLoading();
     const { data: { message } } = await axios({
-      url: `http://localhost:8000/producer/delete/${id}`,
+      url: `https://softfocus.vercel.app/producer/delete/${id}`,
       method: 'delete',
     })
     setMessage(message);
