@@ -2,6 +2,10 @@
 
 Projeto desenvolvido como parte do processo seletivo para o cargo de desenvolvedor web júnior full stack. Esse projeto consiste em uma API construída em Python que acessa um banco de dados relacional postgreSQL hospedado no supabase. O front dessa aplicação foi construído em React utilizando Context API para gerenciamento do estado global da aplicação.
 
+<br />
+
+Para ver a aplicação em funcionando acesse esse [link](https://proagro.vercel.app/)
+
 ## Sumário
 - [Processo seletivo desenvolvedor júnior fullstack Softfocus](#processo-seletivo-desenvolvedor-júnior-fullstack-softfocus)
   - [Sumário](#sumário)
@@ -171,7 +175,9 @@ Projeto desenvolvido como parte do processo seletivo para o cargo de desenvolved
 
 Ao iniciar a aplicação a página principal possui um link que redireciona o usuário à página principal da Softfocus.
 <br />
+<br />
 No header da aplicação existem três links, no primeiro a pessoa usuária é redirecionada para a página principal da aplicação. O segundo é utilizado para cadastrar uma comunicação de perda. O terceiro é utilizado para que a pessoa usuária possa visualizar os registros cadastrados e filtrar os registros com base no cpf do produtor além de editar e deletar os registros.
+<br />
 <br />
 Na página de registro, a pessoa usuária não consegue realizar um cadastro com um email de formato inválido nem com um número de cpf inválido.
 <br />
@@ -191,45 +197,12 @@ Se forem reportados mais de uma comunicação de perda ocorrida em um mesmo dia 
 Para rodar a aplicação localmente, inicialmente faça o clone da aplicação:
 
 ```
-git clone
+git clone git@github.com:DeboraSerra/softfocus.git
 ```
 
-Em seguida, entre na pasta referente ao backend:
+Em seguida, vá até o diretório do frontend:
 ```
-cd ./softfocus/backend
-```
-
-Crie um arquivo .env nessa pasta e copie as variáveis que se encontram no aquivo .env.example ou utilize os valores correspondentes ao seu banco de dados em postgreSQL.
-
-<details>
-  <summary>Se estiver usando um banco de dados próprio:</summary>
-
-  Depois de vincular a aplicação com sucesso, rode os comandos abaixo para criar as tabelas no banco de dados:
-  ```
-  python manage.py makemigration lossCommunication
-  python manage.py migrate lossCommunication
-  ```
-</details>
-
-Instale as dependências nessárias para que o backend funcione:
-```
-pip install -r requirements.txt
-```
-
-Rode o comando para iniciar a aplicação:
-```
-python manage.py runserver
-```
-
-Para conferir a aplicação rodando da maneira correta, abra o navegador e digite:
-```
-localhost:8000/events
-```
-e veja a lista de eventos cadastrados no banco de dados.
-
-Em seguida, abra um novo terminal e vá até o diretório do frontend:
-```
-cd ../frontend
+cd ./frontend
 ```
 
 E rode os comandos abaixo:
@@ -237,5 +210,7 @@ E rode os comandos abaixo:
 yarn install
 yarn start
 ```
+
+Ou acesse o [link](https://proagro.vercel.app/)
 
 Pronto! A aplicação está funcionando e já podem ser cadastradas as comunicações de perda!
