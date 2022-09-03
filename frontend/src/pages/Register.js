@@ -62,10 +62,34 @@ const Register = () => {
     }))
    }
   }
+
+  // https://www.devmedia.com.br/validar-cpf-com-javascript/23916
+  const validateCpf = () => {
+    let sum = 0;
+    let rest = 0;
+    if (cpf === '00000000000') return false;
+    for (let i = 1; i <= 9; i += 1) {
+      sum += parseInt(cpf.substring(i-1, i)) * (11 - i);
+    }
+    rest = (sum * 10) % 11;
+    if ((rest === 10) || (rest === 11)) rest = 0;
+    if (rest !== parseInt(cpf.substring(9, 10))) return false;
+    sum = 0
+    for (let i = 1; i <= 10; i += 1) {
+      sum = sum + parseInt(cpf.substring(i-1, i)) * (12 - i);
+    }
+    rest = (sum * 10) % 11;
+    if (rest === 10 || rest === 11) rest = 0;
+    if (rest !== parseInt(cpf.substring(10, 11))) return false;
+    console.log({ sum, rest});
+    return true;
+  }
+
   useEffect(() => {
     const validFields = fullName && email && type && lastCrop && latitude && longitude && event;
     const validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/g.test(email);
-    const validCpf = cpf && cpf.length === 11;
+    const validCpf = cpf && validateCpf();
+    console.log(validCpf)
     setDisabled(!validFields || !validEmail || !validCpf);
   }, [fullName, email, cpf, type, lastCrop, event, latitude, longitude])
 
@@ -131,11 +155,11 @@ const Register = () => {
     <SForm onSubmit={ handleSubmit }>
       {!!error && <p>{error}</p>}
       {events?.find((ev) => ev.id !== event) && registers.length > 0 && (
-        <section>
+        <section className={ style.warning }>
           <p>O evento informado está divergente dos registros abaixo:</p>
-          <section>
+          <section className={ style.card_sect }>
             {registers.map((reg) => (
-              <section key={ reg.id }>
+              <section className={ style.card } key={ reg.id }>
                 <p>{reg.fullName}</p>
                 <p>{reg.location}</p>
                 <p>{events.find(({ id }) => id === reg.event).name}</p>
