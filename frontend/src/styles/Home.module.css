@@ -11,19 +11,32 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  width: 50%;
   align-items: center;
-  background-color: #292929b5;
+  background-color: #29292996;
   padding: 12px 32px;
   border-radius: 12px;
-  height: 50%;
+  text-align: center;
 }
 
 .banner h2 {
   font-size: 2.4rem;
+  margin-bottom: 24px;
 }
 
 .banner p {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+}
+
+.banner ul {
+  margin: 12px;
+}
+
+.banner ul li {
+  font-size: 1.2rem;
+  text-align: justify;
+  margin-bottom: 8px;
 }
 
 .banner a {

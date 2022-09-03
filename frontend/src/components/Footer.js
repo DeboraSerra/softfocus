@@ -4,7 +4,10 @@ import { SFooter } from '../styles';
 const Footer = () => {
   return (
     <SFooter>
-      <p>SoftFocus</p>
+      <section>
+        <p>Quer saber mais sobre a SoftFocus?</p>
+        <a href="https://softfocus.com.br/" target="_black">Clique aqui</a>
+      </section>
       <p>
         Desenvolvido por
         {' '}
