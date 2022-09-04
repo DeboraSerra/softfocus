@@ -44,3 +44,51 @@
   text-decoration: none;
   font-size: 1.6rem;
 }
+
+.mobile_banner {
+  position: relative;
+  color: white;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid red;
+}
+
+.mobile_banner img {
+  height: 600px;
+}
+
+.mobile_banner section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 90%;
+  margin: auto;
+  align-items: center;
+  background-color: #29292996;
+  padding: 12px 32px;
+  border-radius: 12px;
+  text-align: justify;
+  line-height: 1.4rem;
+}
+
+.mobile_banner h2 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.mobile_banner p {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.mobile_banner ul {
+  margin: 8px;
+}
+
+.mobile_banner ul li {
+  font-size: 1.2rem;
+  text-align: justify;
+  margin-bottom: 4px;
+}
