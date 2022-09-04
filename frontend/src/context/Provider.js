@@ -8,6 +8,7 @@ const Provider = ({ children }) => {
     events: [],
     communications: [],
     loading: true,
+    isMobile: false,
   })
 
   useEffect(() => {
@@ -28,6 +29,7 @@ const Provider = ({ children }) => {
       ...prevSt,
       events: data.data,
       loading: false,
+      isMobile: window.matchMedia('(max-width: 425px)').matches,
     }))
   }
 
