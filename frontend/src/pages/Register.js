@@ -40,6 +40,9 @@ const Register = () => {
       ...prevSt,
       [name]: value,
     }))
+    // if (name === 'event') {
+    //   validateEvent();
+    // }
   }
 
   useEffect(() => {
@@ -92,10 +95,10 @@ const Register = () => {
     setDisabled(!validFields || !validEmail || !validCpf);
   }, [fullName, email, cpf, type, lastCrop, event, latitude, longitude])
 
-  useEffect(() => {
-    const filtered = communications.filter(({ lastCrop: date }) => date === lastCrop);
-    setRegisters(filtered);
-  }, [lastCrop])
+  // useEffect(() => {
+  //   const filtered = communications.filter(({ lastCrop: date }) => date === lastCrop);
+  //   setRegisters(filtered);
+  // }, [lastCrop])
 
   // https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates
   const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
@@ -115,20 +118,29 @@ const Register = () => {
     return deg * (Math.PI/180)
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    changeLoading();
-    const filtered = registers.filter(({ location }) => {
+  const validateEvent = () => {
+    const filteredDate = communications.filter(({ lastCrop: date }) => date === lastCrop)
+    const filtered = filteredDate.filter(({ location }) => {
       const [lat, lon] = location.split(',');
       const distance = getDistanceFromLatLonInKm(+latitude.replace(',', '.'), +longitude.replace(',', '.'), +lat, +lon);
       return distance <= 10;
     })
-    const list = filtered.filter(({ event: eventId }) => event === eventId);
+    const list = filtered.filter(({ event: eventId }) => event !== eventId);
     if (list.length !== 0) {
       setRegisters(list);
-      changeLoading();
-      return;
+      return false;
     }
+    return true;
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const isValid = validateEvent();
+    if (!isValid) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return;
+    };
+    changeLoading();
     const location = `${latitude.replace(',', '.')},${longitude.replace(',', '.')}`;
     const { latitude: lat, longitude: lon, ...info } = state;
     let url = 'https://softfocus.vercel.app/producer';
@@ -153,9 +165,9 @@ const Register = () => {
   const renderBrowser = () => (
     <section>
       {!!error && <p>{error}</p>}
-      {events?.find((ev) => ev.id !== event) && registers.length > 0 && (
+      {registers.length > 0 && (
         <section className={ style.warning }>
-          <p>Nesse dia foram reportados os seguintes eventos:</p>
+          <p>Nessa localização foram reportados os seguintes eventos:</p>
           <section className={ style.card_sect }>
             {registers.map((reg) => (
               <section className={ style.card } key={ reg.id }>
@@ -179,9 +191,9 @@ const Register = () => {
   const renderMobile = () => (
     <section>
       {!!error && <p>{error}</p>}
-      {events?.find((ev) => ev.id !== event) && registers.length > 0 && (
+      {registers.length > 0  && (
         <section className={ style.warning }>
-          <p>Nesse dia foram reportados os seguintes eventos:</p>
+          <p>Nessa localização foram reportados os seguintes eventos:</p>
           <section className={ style.card_sect }>
             {registers.map((reg) => (
               <section className={ style.card } key={ reg.id }>

@@ -5,10 +5,12 @@
 }
 
 .warning {
+  width: 90%;
   border: 1px solid red;
   border-radius: 8px;
   margin: 12px auto;
   padding: 8px 12px;
+  text-align: center;
 }
 
 .warning p {
@@ -26,4 +28,5 @@
   padding: 8px 12px;
   text-align: center;
   border-radius: 8px;
+  margin: 8px;
 }
