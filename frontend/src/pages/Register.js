@@ -1,13 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Context } from '../context/Provider';
-import { AiOutlineQuestionCircle } from 'react-icons/ai';
-import ReactTooltip from 'react-tooltip';
 import axios from 'axios';
-import { SButton, SForm, SInput, SInputHalf, SSelect } from '../styles';
 import style from '../styles/Register.module.css';
 import FormBrowser from '../components/FormBrowser';
 import FormMobile from '../components/FormMobile';
+import Loading from '../components/Loading';
 
 const Register = () => {
   const [state, setState] = useState({
@@ -24,7 +22,7 @@ const Register = () => {
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState('');
   const { fullName, email, cpf, type, lastCrop, event, latitude, longitude } = state;
-  const { events, communications, getCommunications, isMobile, changeLoading } = useContext(Context);
+  const { events, communications, getCommunications, isMobile, changeLoading, loading } = useContext(Context);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -204,9 +202,9 @@ const Register = () => {
     </section>
   )
 
+  if (loading) return <Loading />
   return (
     <section>
-
       {!isMobile ? (
         renderBrowser()
       ) : renderMobile()}

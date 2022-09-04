@@ -6,11 +6,12 @@ import axios from 'axios';
 import style from '../styles/Search.module.css';
 import TableBrowser from '../components/TableBrowse';
 import TableMobile from '../components/TableMobile';
+import Loading from '../components/Loading';
 
 const Search = () => {
   const [message, setMessage] = useState('');
   const [order, setOrder] = useState('');
-  const { events, communications, getCommunications, changeLoading, setState, isMobile } = useContext(Context);
+  const { events, communications, getCommunications, changeLoading, setState, isMobile, loading } = useContext(Context);
 
   useEffect(() => {
     changeLoading();
@@ -80,6 +81,7 @@ const Search = () => {
     </section>
   )
 
+  if (loading) return <Loading />
   return (
     <>
       {!isMobile ? renderBrowser() : renderMobile()}

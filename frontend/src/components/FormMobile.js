@@ -2,14 +2,15 @@ import React, { useContext } from 'react';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import ReactTooltip from 'react-tooltip';
 import { Context } from '../context/Provider';
-import { SButton, SForm, SInput, SInputHalf, SSelect } from '../styles';
+import { SButton, SForm, SInput, SSelect } from '../styles';
 import style from '../styles/Register.mobile.module.css';
+import Loading from './Loading';
 
 const FormMobile = ({ handleSubmit, handleChange, fullName, email, latitude, longitude, cpf, type, lastCrop, event, disabled }) => {
   const { events, loading } = useContext(Context);
 
   const date = new Date().toISOString().split('T')[0];
-  if (loading) return <p>Carregando...</p>
+  if (loading) return <Loading />
   return (
     <SForm className={ style.form } onSubmit={ handleSubmit }>
       <ReactTooltip
