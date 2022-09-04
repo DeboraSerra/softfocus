@@ -6,6 +6,8 @@ import ReactTooltip from 'react-tooltip';
 import axios from 'axios';
 import { SButton, SForm, SInput, SInputHalf, SSelect } from '../styles';
 import style from '../styles/Register.module.css';
+import FormBrowser from '../components/FormBrowser';
+import FormMobile from '../components/FormMobile';
 
 const Register = () => {
   const [state, setState] = useState({
@@ -22,7 +24,7 @@ const Register = () => {
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState('');
   const { fullName, email, cpf, type, lastCrop, event, latitude, longitude } = state;
-  const { events, communications, getCommunications } = useContext(Context);
+  const { events, communications, getCommunications, isMobile, changeLoading } = useContext(Context);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -119,6 +121,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    changeLoading();
     const filtered = registers.filter(({ location }) => {
       const [lat, lon] = location.split(',');
       const distance = getDistanceFromLatLonInKm(+latitude.replace(',', '.'), +longitude.replace(',', '.'), +lat, +lon);
@@ -127,6 +130,7 @@ const Register = () => {
     const list = filtered.filter(({ event: eventId }) => event === eventId);
     if (list.length !== 0) {
       setRegisters(list);
+      changeLoading();
       return;
     }
     const location = `${latitude.replace(',', '.')},${longitude.replace(',', '.')}`;
@@ -152,8 +156,8 @@ const Register = () => {
 
   const date = new Date().toISOString().split('T')[0];
 
-  return (
-    <SForm onSubmit={ handleSubmit }>
+  const renderBrowser = () => (
+    <section>
       {!!error && <p>{error}</p>}
       {events?.find((ev) => ev.id !== event) && registers.length > 0 && (
         <section className={ style.warning }>
@@ -169,95 +173,48 @@ const Register = () => {
           </section>
         </section>
       )}
-      <ReactTooltip
-        place="right"
-        effect="float"
-        multiline={ true }
-        id="location"
-        isCapture={ false }
-      >
-        <p>Para achar a localização da sua lavoura, <br />acesse o google maps, clique com o botão direito <br />sobre o local da sua lavoura e copie os dois números que<br /> aparecem na posição inferior da tela. <br /> O primeiro é a latitude e o segundo é a longitude.</p>
-      </ReactTooltip>
-      <SInput
-        type="text"
-        name="fullName"
-        value={ fullName }
-        onChange={ handleChange }
-        placeholder="Nome completo do produtor"
-        aria-label="Nome completo do produtor"
-      />
-      <SInput
-        type="email"
-        name="email"
-        value={ email }
-        onChange={ handleChange }
-        placeholder="E-mail do produtor"
-        aria-label="E-mail do produtor"
-      />
-      <SInput
-        type="text"
-        name="cpf"
-        value={ cpf }
-        onChange={ handleChange }
-        placeholder="CPF do produtor"
-        aria-label="CPF do produtor"
-      />
-      <SInput
-        type="text"
-        name="type"
-        value={ type }
-        onChange={ handleChange }
-        placeholder="Tipo da lavoura"
-        aria-label="Tipo da lavoura"
-      />
-      <label htmlFor="date" style={{ width: '100%', textAlign: 'center' }}>
-        Data da última colheita
-        <SInput
-          id="date"
-          type="date"
-          name="lastCrop"
-          value={ lastCrop }
-          onChange={ handleChange }
-          placeholder="Data da última colheita"
-          aria-label="Data da última colheita"
-          max={ date }
-        />
-      </label>
-      <section className={ style.sect }>
-        <SInputHalf
-          type="text"
-          name="latitude"
-          value={ latitude }
-          onChange={ handleChange }
-          placeholder="Latidude da lavoura"
-          aria-label="Latidude da lavoura"
-        />
-        <SInputHalf
-          type="text"
-          name="longitude"
-          value={ longitude }
-          onChange={ handleChange }
-          placeholder="Longitude da lavoura"
-          aria-label="Longitude da lavoura"
-        />
-        <AiOutlineQuestionCircle
-          data-tip
-          data-for="location"
-        />
-      </section>
-      <SSelect name="event" onChange={ handleChange } value={ event }>
-        <option value="" disabled>Selecione o evento</option>
-        {events.map(({ id, name }) => (
-          <option key={ id } value={ id }>{name}</option>
-        ))}
-      </SSelect>
-      <SButton
-        type="submit"
+      <FormBrowser
+        handleSubmit={ handleSubmit }
+        handleChange={ handleChange}
+        {...state}
         disabled={ disabled }
-      >
-        Cadastrar
-      </SButton>
-    </SForm>
+      />
+    </section>
+  )
+
+  const renderMobile = () => (
+    <section>
+      {!!error && <p>{error}</p>}
+      {events?.find((ev) => ev.id !== event) && registers.length > 0 && (
+        <section className={ style.warning }>
+          <p>O evento informado está divergente dos registros abaixo:</p>
+          <section className={ style.card_sect }>
+            {registers.map((reg) => (
+              <section className={ style.card } key={ reg.id }>
+                <p>{reg.fullName}</p>
+                <p>{reg.location}</p>
+                <p>{events.find(({ id }) => id === reg.event).name}</p>
+              </section>
+            ))}
+          </section>
+        </section>
+      )}
+      <FormMobile
+        handleSubmit={ handleSubmit }
+        handleChange={ handleChange}
+        {...state}
+        disabled={ disabled }
+      />
+    </section>
+  )
+
+  return (
+    <section>
+
+      {!isMobile ? (
+        renderBrowser()
+      ) : renderMobile()}
+    </section>
   )
 }
 
