@@ -33,3 +33,19 @@
   background-color: white;
   padding: 4px;
 }
+
+.search_sect {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.order_mobile {
+  margin-bottom: 16px;
+  padding: 8px;
+  border: none;
+  border-bottom: 1px solid var(--gray);
+  background-color: transparent;
+  font-size: 1.2rem;
+}

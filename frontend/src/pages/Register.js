@@ -84,7 +84,6 @@ const Register = () => {
     rest = (sum * 10) % 11;
     if (rest === 10 || rest === 11) rest = 0;
     if (rest !== parseInt(cpf.substring(10, 11))) return false;
-    console.log({ sum, rest});
     return true;
   }
 
@@ -92,7 +91,6 @@ const Register = () => {
     const validFields = fullName && email && type && lastCrop && latitude && longitude && event;
     const validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/g.test(email);
     const validCpf = cpf && validateCpf();
-    console.log(validCpf)
     setDisabled(!validFields || !validEmail || !validCpf);
   }, [fullName, email, cpf, type, lastCrop, event, latitude, longitude])
 
@@ -154,14 +152,12 @@ const Register = () => {
     navigate('/search');
   }
 
-  const date = new Date().toISOString().split('T')[0];
-
   const renderBrowser = () => (
     <section>
       {!!error && <p>{error}</p>}
       {events?.find((ev) => ev.id !== event) && registers.length > 0 && (
         <section className={ style.warning }>
-          <p>O evento informado está divergente dos registros abaixo:</p>
+          <p>Nesse dia foram reportados os seguintes eventos:</p>
           <section className={ style.card_sect }>
             {registers.map((reg) => (
               <section className={ style.card } key={ reg.id }>
@@ -187,7 +183,7 @@ const Register = () => {
       {!!error && <p>{error}</p>}
       {events?.find((ev) => ev.id !== event) && registers.length > 0 && (
         <section className={ style.warning }>
-          <p>O evento informado está divergente dos registros abaixo:</p>
+          <p>Nesse dia foram reportados os seguintes eventos:</p>
           <section className={ style.card_sect }>
             {registers.map((reg) => (
               <section className={ style.card } key={ reg.id }>

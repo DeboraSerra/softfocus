@@ -7,7 +7,7 @@ const SearchBar = () => {
     cpf: '',
   });
   const [error, setError] = useState('');
-  const { getCommunications } = useContext(Context);
+  const { getCommunications, isMobile } = useContext(Context);
 
   const handleChange = ({ target }) => {
     let { value } = target;
@@ -32,17 +32,17 @@ const SearchBar = () => {
   }
 
   return (
-    <form className={ style.form } onSubmit={ handleSubmit }>
+    <form className={ isMobile ? style.form_mobile : style.form } onSubmit={ handleSubmit }>
       <label htmlFor="search">Pesquisar registro por CPF:
         <input
-          className={ style.input }
+          className={ isMobile ? style.input_mobile : style.input }
           type="text"
           id="search"
           value={ state.search }
           onChange={ handleChange }
         />
       </label>
-      <button className={ style.button } type="submit">Pesquisar</button>
+      <button className={ isMobile ? style.btn_mobile : style.button } type="submit">Pesquisar</button>
       {error && <p>{error}</p>}
     </form>
   )

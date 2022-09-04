@@ -61,3 +61,43 @@
   position: relative;
   color: var(--gray);
 }
+
+.form_mobile {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 0 auto 8px;
+  align-items: center;
+}
+
+.form_mobile label {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.input_mobile {
+  width: 80%;
+  text-align: center;
+  margin: 16px auto;
+  padding: 8px 4px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--lighter-gray);
+  color: var(--gray);
+}
+
+.btn_mobile {
+  background-color: var(--blue);
+  margin: 4px;
+  border: none;
+  color: var(--lighter-gray);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
