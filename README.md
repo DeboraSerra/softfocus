@@ -4,6 +4,10 @@ Projeto desenvolvido como parte do processo seletivo para o cargo de desenvolved
 
 <br />
 
+A documentação da API se encontra nesse [link](https://softfocus.docs.apiary.io/#reference/0/eventos);
+
+<br />
+
 Para ver a aplicação em funcionando acesse esse [link](https://proagro.vercel.app/)
 
 ## Sumário
