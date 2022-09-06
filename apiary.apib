@@ -1,0 +1,156 @@
+FORMAT: 1A
+HOST: https://softfocus.vercel.app/
+
+# Comunicação de perda - Softfocus
+
+Esta api é dedicada para cadastro de comunicação de perda ocorrida para exonerar o produtor rural de obrigações financeiras relativas a operações de crédito.
+
+## Eventos [/events]
+
+### Listar todos os eventos [GET]
+
++ Response 200 (application/json)
+
+  [
+        {
+            "id": 1,
+            "name": "Chuva excessiva"
+        },
+        {
+            "id": 2,
+            "name": "Geada"
+        },
+        {
+            "id": 3,
+            "name": "Granizo"
+        },
+        {
+            "id": 4,
+            "name": "Seca"
+        },
+        {
+            "id": 5,
+            "name": "Vendaval"
+        },
+        {
+            "id": 6,
+            "name": "Raio"
+        }
+    ]
+
+## Produtores [/producer]
+
+### Listar todos os produtores [GET]
+
+
++ Response 200 (application/json)
+
+    [
+        {
+            "id": 1,
+            "fullName": "Fulano da Silva",
+            "email": "fulano.silva@email.com",
+            "cpf": "00000000000",
+            "type": "milho",
+            "lastCrop": "2021-06-21",
+            "event": 1,
+            "location": "-14.56489,-14,364584",
+        },
+        {
+            "id": 2,
+            "fullName": "Ciclano Borges",
+            "email": "ciclano.borges@email.com",
+            "cpf": "00000000000",
+            "type": "arroz",
+            "lastCrop": "2022-06-21",
+            "event": 2,
+            "location": "-14.36489,-14,464584",
+        },
+    ]
+    
+### Adicionar um novo registro [POST]
+
+
++ Request (application/json)
+
+    {
+        "id": 1,
+        "fullName": "Fulano da Silva",
+        "email": "fulano.silva@email.com",
+        "cpf": "00000000000",
+        "type": "milho",
+        "lastCrop": "2021-06-21",
+        "event": 1,
+        "location": "-14.56489,-14,364584",
+    }
+
+## Produtor por cpf [/producer/:cpf]
+
+### Listar os cadastros de um produtor com base no cpf [GET]
+
+
++ Response 200 (application/json)
+
+    [
+        {
+            "id": 1,
+            "fullName": "Fulano da Silva",
+            "email": "fulano.silva@email.com",
+            "cpf": "00000000000",
+            "type": "milho",
+            "lastCrop": "2021-06-21",
+            "event": 1,
+            "location": "-14.56489,-14,364584",
+        },
+        {
+            "id": 2,
+            "fullName": "Ciclano Borges",
+            "email": "ciclano.borges@email.com",
+            "cpf": "00000000000",
+            "type": "arroz",
+            "lastCrop": "2022-06-21",
+            "event": 2,
+            "location": "-14.36489,-14,464584",
+        },
+    ]
+
+## Editar produtor [/producer/get/:id]
+
+### Editar um cadastro [PUT]
+
+
++ Request (application/json)
+
+    {
+        "id": 1,
+        "fullName": "Fulano da Silva",
+        "email": "fulano.silva@email.com",
+        "cpf": "00000000000",
+        "type": "milho",
+        "lastCrop": "2021-06-21",
+        "event": 1,
+        "location": "-14.56489,-14,364584",
+    }
+    
++ Response 200 (application/json)
+
+    {
+        "id": 1,
+        "fullName": "Fulano da Silva",
+        "email": "fulano.silva@email.com",
+        "cpf": "00000000000",
+        "type": "milho",
+        "lastCrop": "2021-06-21",
+        "event": 1,
+        "location": "-14.56489,-14,364584",
+    }
+    
+
+## Deletar um produtor [/producer/delete/:id]
+
+### Deletar um cadastro [DELETE]
+
++ Response 200
+    {
+        "message": "Comunicação deletada com sucesso"
+    }
