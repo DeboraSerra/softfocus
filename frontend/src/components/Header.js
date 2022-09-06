@@ -7,14 +7,6 @@ import { Context } from '../context/Provider';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import style from '../styles/Header.module.css';
 
-const modalStyle = {
-  overlay: {},
-  content: {
-    display: 'flex',
-    'flex-direction': 'column',
-  }
-}
-
 Modal.setAppElement('#root');
 
 const Header = () => {

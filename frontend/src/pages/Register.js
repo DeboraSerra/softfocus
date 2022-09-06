@@ -40,9 +40,6 @@ const Register = () => {
       ...prevSt,
       [name]: value,
     }))
-    // if (name === 'event') {
-    //   validateEvent();
-    // }
   }
 
   useEffect(() => {
@@ -94,11 +91,6 @@ const Register = () => {
     const validCpf = cpf && validateCpf();
     setDisabled(!validFields || !validEmail || !validCpf);
   }, [fullName, email, cpf, type, lastCrop, event, latitude, longitude])
-
-  // useEffect(() => {
-  //   const filtered = communications.filter(({ lastCrop: date }) => date === lastCrop);
-  //   setRegisters(filtered);
-  // }, [lastCrop])
 
   // https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates
   const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {

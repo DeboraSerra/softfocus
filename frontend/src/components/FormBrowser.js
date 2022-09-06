@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import ReactTooltip from 'react-tooltip';
 import { Context } from '../context/Provider';
+import Loading from './Loading';
 import { SButton, SForm, SInput, SInputHalf, SSelect } from '../styles';
 import style from '../styles/Register.module.css';
 
@@ -9,7 +10,7 @@ const FormBrowser = ({ handleSubmit, handleChange, fullName, email, latitude, lo
   const { events, loading } = useContext(Context);
 
   const date = new Date().toISOString().split('T')[0];
-  if (loading) return <p>Carregando...</p>
+  if (loading) return <Loading />
   return (
     <SForm onSubmit={ handleSubmit }>
       <ReactTooltip

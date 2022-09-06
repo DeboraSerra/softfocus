@@ -3,11 +3,13 @@ import { FaRegEdit } from 'react-icons/fa';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../context/Provider';
+import Loading from './Loading';
 import style from '../styles/Search.mobile.module.css';
 
 const TableBrowser = ({ getDate, getEvent, handleDelete }) => {
   const { loading, communications } = useContext(Context);
   const navigate = useNavigate();
+  if (loading) return <Loading />
   return (
     <section className={ style.card_sect }>
       {!loading && (

@@ -17,6 +17,7 @@ const SearchBar = () => {
       cpf: value,
     })
   }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isNaN(state.cpf)) {

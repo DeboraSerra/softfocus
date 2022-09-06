@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import SearchBar from '../components/SearchBar';
 import { Context } from '../context/Provider';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import style from '../styles/Search.module.css';
 import TableBrowser from '../components/TableBrowse';
